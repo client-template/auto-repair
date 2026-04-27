@@ -6,7 +6,7 @@ compatibility_date = "2024-12-01"
 [[kv_namespaces]]
 binding = "CONTENT"
 # Per-client: run `wrangler kv:namespace create CONTENT` and replace this ID
-id = "fa89f89211294ba191c922d863bd7bee"
+id = "" # Per-client: run `wrangler kv:namespace create CONTENT` and paste your ID here
 
 # R2 bucket for image uploads
 [[r2_buckets]]

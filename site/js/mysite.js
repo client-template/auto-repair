@@ -41,7 +41,9 @@ async function initAdmin() {
   } catch { window.location.href = "/mysite/login.html"; return; }
 
   try {
-    const res = await fetch(`${API_BASE}/content`);
+    const res = await fetch(`${API_BASE}/content`, {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    });
     BUSINESS = await res.json();
   } catch {
     document.getElementById("adminRoot").innerHTML = "<p>Failed to load content.</p>";
@@ -553,7 +555,13 @@ window.logout = logout;
 
 // ─── Helpers ─────────────────────────────────────────────────────────
 
-function getNestedValue(obj, path) { return path.split(".").reduce((o, k) => o?.[k], obj); }
+function getNestedValue(obj, path) {
+  const BLOCKED = new Set(["__proto__", "constructor", "prototype"]);
+  return path.split(".").reduce((o, k) => {
+    if (BLOCKED.has(k)) return undefined;
+    return o?.[k];
+  }, obj);
+}
 function setNestedValue(obj, path, value) {
   const BLOCKED = new Set(["__proto__", "constructor", "prototype"]);
   const keys = path.split(".");

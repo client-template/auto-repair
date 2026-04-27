@@ -50,6 +50,7 @@ const SECURITY_HEADERS = {
   "X-XSS-Protection": "1; mode=block",
   "Referrer-Policy": "strict-origin-when-cross-origin",
   "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+  "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
 };
 
 function getCorsOrigin(request, env) {
@@ -61,8 +62,8 @@ function getCorsOrigin(request, env) {
     if (origin.startsWith("http://localhost") || origin.startsWith("http://127.0.0.1")) {
       return origin;
     }
-    // Same-origin requests (no Origin header) are fine; cross-origin denied
-    return origin ? "null" : "*";
+    // No Origin header = same-origin request; deny cross-origin
+    return "null";
   }
 
   return origin === allowed ? allowed : "null";
@@ -73,6 +74,7 @@ function corsHeaders(request, env) {
     "Access-Control-Allow-Origin": getCorsOrigin(request, env),
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    "Vary": "Origin",
   };
 }
 
@@ -80,7 +82,7 @@ function json(data, status = 200, request = null, env = null) {
   const headers = {
     "Content-Type": "application/json",
     ...SECURITY_HEADERS,
-    ...(request && env ? corsHeaders(request, env) : { "Access-Control-Allow-Origin": "*" }),
+    ...(request && env ? corsHeaders(request, env) : {}),
   };
   return new Response(JSON.stringify(data), { status, headers });
 }

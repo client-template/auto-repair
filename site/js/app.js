@@ -632,17 +632,24 @@ function initInteractions() {
       const formData = new FormData(form);
       const data = Object.fromEntries(formData);
       try {
-        await fetch(`${API_BASE}/booking`, {
+        const res = await fetch(`${API_BASE}/booking`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
         });
+        if (!res.ok) throw new Error("Submission failed");
+        form.style.display = "none";
+        document.getElementById("formSuccess").style.display = "block";
       } catch {
-        // Silently continue — show success to customer regardless
-        // (booking endpoint may not be configured yet)
+        let errEl = document.getElementById("formError");
+        if (!errEl) {
+          errEl = document.createElement("div");
+          errEl.id = "formError";
+          errEl.style.cssText = "color:#dc2626;margin-top:1rem;font-weight:600";
+          form.appendChild(errEl);
+        }
+        errEl.textContent = "Submission failed. Please call us directly.";
       }
-      form.style.display = "none";
-      document.getElementById("formSuccess").style.display = "block";
     });
   }
 }

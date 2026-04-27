@@ -17,7 +17,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
   } catch (err) {
     // Show rate-limit messages as-is; generic message for everything else
     if (err.message && err.message.includes("Too many login attempts")) {
-      errorEl.textContent = err.message;
+      errorEl.textContent = "Too many login attempts. Please try again later.";
     } else {
       errorEl.textContent = "Invalid password. Please try again.";
     }

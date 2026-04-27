@@ -314,7 +314,11 @@ function bindAllVisibility(scope) {
 // ─── Helpers ─────────────────────────────────────────────────────────
 
 function getNestedValue(obj, path) {
-  return path.split(".").reduce((o, k) => o?.[k], obj);
+  const BLOCKED = new Set(["__proto__", "constructor", "prototype"]);
+  return path.split(".").reduce((o, k) => {
+    if (BLOCKED.has(k)) return undefined;
+    return o?.[k];
+  }, obj);
 }
 
 function setNestedValue(obj, path, value) {
@@ -337,7 +341,9 @@ async function initEditor() {
   if (!authenticated) { window.location.href = "/mysite/login.html"; return; }
 
   try {
-    const res = await fetch(`${API_BASE}/content`);
+    const res = await fetch(`${API_BASE}/content`, {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    });
     if (!res.ok) throw new Error("Failed to load");
     BUSINESS = await res.json();
     THEME = BUSINESS.theme || "modern";

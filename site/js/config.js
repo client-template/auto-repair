@@ -5,4 +5,4 @@
  * - Same domain (Worker route): use "/api"
  * - Separate subdomains (current test setup): use full Worker URL
  */
-const API_BASE = "https://auto-repair-api.getyoursitelive.workers.dev/api";
+const API_BASE = "/api";

@@ -16,7 +16,7 @@ client after the $500 sale so their site runs forever with no monthly fees.
 | **Stack** | Next.js 16 + React 19 + D1 | Static HTML/CSS/JS + Worker |
 | **Database** | Cloudflare D1 (SQLite, 650+ rows) | Cloudflare KV (one JSON blob) |
 | **Images** | Cloudflare R2 (shared bucket) | Cloudflare R2 (client's own bucket) |
-| **Auth** | JWT session cookies via jose | HMAC-SHA256 tokens in localStorage |
+| **Auth** | JWT session cookies via jose | HMAC-SHA256 tokens in sessionStorage |
 | **Hosting** | Cloudflare Pages (our account) | Cloudflare Pages (client's account) |
 | **Editor** | React components, server actions | Vanilla JS, data-attribute-driven |
 | **Templates** | `src/lib/templates/` (6 verticals) | Content in `sample-content.json` |
@@ -97,7 +97,7 @@ version in ALL HTML files when changing JS or CSS.
 ## Auth
 
 - HMAC-SHA256 with 7-day TTL
-- Token stored in localStorage (acceptable for single-admin tool)
+- Token stored in sessionStorage (dies on tab close; acceptable for single-admin tool)
 - Worker validates token on every mutation endpoint
 - Single admin password per site (set via `wrangler secret put PASSWORD`)
 
@@ -133,44 +133,39 @@ cd site && wrangler pages deploy . --project-name client-site
 
 See `AUDIT.md` for initial codebase audit and `SECURITY-AUDIT.md` for the full 19-finding dual-agent security audit (both 2026-04-27).
 
-### Security — remaining (from SECURITY-AUDIT.md)
-
-**CRITICAL:**
-- [ ] #1 — Remove password from token HMAC payload; use random nonce instead (`createToken`/`verifyToken`)
-
-**HIGH:**
-- [ ] #2 — Change `config.js` API_BASE to `/api` (relative); remove hardcoded Worker URL from `_headers` CSP
-- [ ] #3 — Make TOKEN_SECRET required (throw if missing, don't fall back to PASSWORD)
-- [ ] #4 — Escape `data-target` attribute in stats: `esc(String(s.value))` in `app.js` line 226
-- [ ] #5 — Add server-side content structure validation + key allowlist on POST /api/content
-- [ ] #6 — Move auth token from localStorage to sessionStorage (short-term) or HttpOnly cookie (long-term)
-
-**MEDIUM:**
-- [ ] #7 — CORS default-deny when ALLOWED_ORIGIN not set (allow localhost only)
-- [ ] #8 — Require `Content-Type: application/json` on POST /api/content
-- [ ] #9 — Token generation counter in KV for session revocation ("sign out everywhere")
-- [ ] #10 — Public content endpoint should strip internal fields for unauthenticated requests
-- [ ] #11 — Derive upload file extension from validated MIME type, not user-provided filename
-- [ ] #12 — Block `__proto__`/`constructor`/`prototype` in `setNestedValue()` (prototype pollution)
-- [ ] #13 — Document that Worker MUST run behind Cloudflare proxy in production
-
-**LOW:**
-- [ ] #15 — Remove KV namespace ID from wrangler.toml; ship empty placeholder per client
-- [ ] #18 — Don't reflect server error messages verbatim on login; show generic message
-- [ ] #19 — Booking form silently discards submissions — connect to endpoint or remove
-
-### Security — done
+### Security — done (19-finding audit, all fixed 2026-04-27)
+- [x] #1 CRITICAL — Token no longer contains password; uses random nonce (`session:{gen}:{nonce}:{ts}`)
+- [x] #2 HIGH — `config.js` API_BASE changed to `/api` (relative); hardcoded Worker URL removed from CSP
+- [x] #3 HIGH — `TOKEN_SECRET` required; `getSigningKey()` throws if missing
+- [x] #4 HIGH — Stats `data-target` attribute escaped via `esc()`
+- [x] #5 HIGH — Content validation: `ALLOWED_CONTENT_KEYS` allowlist + `businessInfo` required
+- [x] #6 HIGH — Auth token moved from localStorage to sessionStorage
+- [x] #7 MEDIUM — CORS default-deny when `ALLOWED_ORIGIN` not set (localhost only for dev)
+- [x] #8 MEDIUM — `Content-Type: application/json` required on POST /api/content
+- [x] #9 MEDIUM — Token generation counter + `POST /api/invalidate-sessions` endpoint
+- [x] #10 MEDIUM — Public GET /api/content strips `slug` for unauthenticated requests
+- [x] #11 MEDIUM — Upload extension derived from validated MIME type (`MIME_TO_EXT` map)
+- [x] #12 MEDIUM — Prototype pollution blocked in `setNestedValue()` and `getNestedValue()`
+- [x] #13 MEDIUM — Documented: Worker MUST run behind Cloudflare proxy
+- [x] #15 LOW — KV namespace ID emptied in wrangler.toml (forces per-client setup)
+- [x] #18 LOW — Login errors show generic messages (rate-limit or "Invalid password")
+- [x] #19 LOW — Booking form POSTs to `/api/booking` with error handling
 - [x] Rate limiting on login (5 attempts / 15 min, KV-backed)
-- [x] Timing-safe password comparison (HMAC-based, no length leak)
-- [x] Security headers on all responses (X-Frame-Options, CSP, etc.)
-- [x] CORS locked to ALLOWED_ORIGIN (no more wildcard)
-- [x] Separate TOKEN_SECRET from login PASSWORD
+- [x] Timing-safe comparison (HMAC both inputs, fixed-length XOR)
+- [x] Security headers on all responses (X-Frame-Options, HSTS, CSP, etc.)
+- [x] CORS with `Vary: Origin` for correct caching
 - [x] SVG removed from upload allow-list (XSS vector)
 - [x] All inline scripts extracted; CSP `script-src 'self'` via `_headers`
 - [x] 512KB payload limit on POST /api/content
 - [x] Single-quote escaping in `esc()`
-- [x] X-Forwarded-For removed from rate limiter (CF-Connecting-IP only)
+- [x] CF-Connecting-IP only (no X-Forwarded-For spoofing)
 - [x] Path traversal prevention on image endpoint
+- [x] `data:` removed from CSP `img-src` (Red Team round 2 finding)
+
+### Security — known limitations (accepted risks)
+- **Last-write-wins race condition:** Two admins editing simultaneously can overwrite each other's changes. Accepted: single-admin tool, no concurrent editing expected. If needed later, add ETag/If-Match optimistic locking.
+- **KV write quota exhaustion:** Distributed login spam (below per-IP threshold) could exhaust KV write quota via rate-limit records. Mitigation: enable Cloudflare Edge Rate Limiting on `/api/login` route in production, or use a separate KV namespace for rate-limit records so quota exhaustion doesn't affect content storage.
+- **sessionStorage token (not HttpOnly cookie):** Token accessible to JS. Acceptable for single-admin tool; XSS is mitigated by strict CSP. Full HttpOnly cookie auth would require significant Worker refactor.
 
 ### Code quality
 - [ ] `esc()`, `getNestedValue()`, `setNestedValue()` duplicated across app.js, editsite.js, mysite.js — extract to shared utils.js
@@ -193,7 +188,8 @@ See `AUDIT.md` for initial codebase audit and `SECURITY-AUDIT.md` for the full 1
 | 2026-04-27 | Wrap text in spans next to SVG icons | contenteditable on parent breaks SVG rendering |
 | 2026-04-27 | Skip stats animation in edit mode | Counter animation overwrites contenteditable text |
 | 2026-04-27 | Pause testimonial auto-advance in edit mode | innerHTML replacement destroys edit bindings |
-| 2026-04-27 | localStorage for auth tokens (not cookies) | Simpler Worker; acceptable risk for admin-only tool |
+| 2026-04-27 | sessionStorage for auth tokens (not cookies) | Simpler Worker; token dies on tab close; acceptable risk for admin-only tool |
+| 2026-04-27 | Always run adversarial security audit after building | Builder accumulates context blindness — trusts own output after hours of work. Fresh eyes with a specific adversarial mandate catch what the builder misses. The dual-agent red/blue team audit found 19 issues the builder overlooked, including a CRITICAL token flaw the builder wrote himself. |
 | 2026-04-27 | KV not D1 for storage | One JSON blob per site; no relational needs; KV is simpler |
 | 2026-04-27 | Zero npm deps in site | Client gets plain files; no build step; nothing to break |
 
