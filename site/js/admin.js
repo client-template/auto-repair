@@ -32,13 +32,13 @@ const TABS = [
 
 async function initAdmin() {
   const token = getToken();
-  if (!token) { window.location.href = "/admin/login.html"; return; }
+  if (!token) { window.location.href = "/mysite/login.html"; return; }
 
   try {
     const check = await fetch(`${API_BASE}/auth/check`, { headers: { Authorization: `Bearer ${token}` } });
     const d = await check.json();
-    if (!d.authenticated) { window.location.href = "/admin/login.html"; return; }
-  } catch { window.location.href = "/admin/login.html"; return; }
+    if (!d.authenticated) { window.location.href = "/mysite/login.html"; return; }
+  } catch { window.location.href = "/mysite/login.html"; return; }
 
   try {
     const res = await fetch(`${API_BASE}/content`);
@@ -61,7 +61,7 @@ function renderAdmin() {
         <div class="admin-header-inner">
           <span class="admin-brand">${esc(BUSINESS.businessInfo?.name || "Site Admin")}</span>
           <div class="admin-header-actions">
-            <a href="/admin/edit.html" class="admin-btn">Inline Editor</a>
+            <a href="/mysite/edit.html" class="admin-btn">Inline Editor</a>
             <a href="/" class="admin-btn" target="_blank">View Site</a>
             <button class="admin-btn admin-btn-danger" onclick="logout()">Sign Out</button>
           </div>
@@ -548,7 +548,7 @@ async function saveChanges() {
 }
 window.saveChanges = saveChanges;
 
-function logout() { localStorage.removeItem("site_token"); window.location.href = "/admin/login.html"; }
+function logout() { localStorage.removeItem("site_token"); window.location.href = "/mysite/login.html"; }
 window.logout = logout;
 
 // ─── Helpers ─────────────────────────────────────────────────────────
