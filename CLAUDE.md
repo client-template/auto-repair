@@ -131,21 +131,57 @@ cd site && wrangler pages deploy . --project-name client-site
 
 ## Known issues / TODO
 
-See AUDIT.md for the full codebase audit (2026-04-27).
+See `AUDIT.md` for initial codebase audit and `SECURITY-AUDIT.md` for the full 19-finding dual-agent security audit (both 2026-04-27).
 
-### Security
-- [ ] config.js has hardcoded test Worker URL — must change per client
-- [ ] No rate limiting on login endpoint
-- [ ] Password stored as plain text in KV env (fine for single-admin)
+### Security — remaining (from SECURITY-AUDIT.md)
+
+**CRITICAL:**
+- [ ] #1 — Remove password from token HMAC payload; use random nonce instead (`createToken`/`verifyToken`)
+
+**HIGH:**
+- [ ] #2 — Change `config.js` API_BASE to `/api` (relative); remove hardcoded Worker URL from `_headers` CSP
+- [ ] #3 — Make TOKEN_SECRET required (throw if missing, don't fall back to PASSWORD)
+- [ ] #4 — Escape `data-target` attribute in stats: `esc(String(s.value))` in `app.js` line 226
+- [ ] #5 — Add server-side content structure validation + key allowlist on POST /api/content
+- [ ] #6 — Move auth token from localStorage to sessionStorage (short-term) or HttpOnly cookie (long-term)
+
+**MEDIUM:**
+- [ ] #7 — CORS default-deny when ALLOWED_ORIGIN not set (allow localhost only)
+- [ ] #8 — Require `Content-Type: application/json` on POST /api/content
+- [ ] #9 — Token generation counter in KV for session revocation ("sign out everywhere")
+- [ ] #10 — Public content endpoint should strip internal fields for unauthenticated requests
+- [ ] #11 — Derive upload file extension from validated MIME type, not user-provided filename
+- [ ] #12 — Block `__proto__`/`constructor`/`prototype` in `setNestedValue()` (prototype pollution)
+- [ ] #13 — Document that Worker MUST run behind Cloudflare proxy in production
+
+**LOW:**
+- [ ] #15 — Remove KV namespace ID from wrangler.toml; ship empty placeholder per client
+- [ ] #18 — Don't reflect server error messages verbatim on login; show generic message
+- [ ] #19 — Booking form silently discards submissions — connect to endpoint or remove
+
+### Security — done
+- [x] Rate limiting on login (5 attempts / 15 min, KV-backed)
+- [x] Timing-safe password comparison (HMAC-based, no length leak)
+- [x] Security headers on all responses (X-Frame-Options, CSP, etc.)
+- [x] CORS locked to ALLOWED_ORIGIN (no more wildcard)
+- [x] Separate TOKEN_SECRET from login PASSWORD
+- [x] SVG removed from upload allow-list (XSS vector)
+- [x] All inline scripts extracted; CSP `script-src 'self'` via `_headers`
+- [x] 512KB payload limit on POST /api/content
+- [x] Single-quote escaping in `esc()`
+- [x] X-Forwarded-For removed from rate limiter (CF-Connecting-IP only)
+- [x] Path traversal prevention on image endpoint
 
 ### Code quality
-- [ ] `esc()`, `getNestedValue()`, `setNestedValue()` duplicated across app.js, editor.js, admin.js — extract to shared utils.js
+- [ ] `esc()`, `getNestedValue()`, `setNestedValue()` duplicated across app.js, editsite.js, mysite.js — extract to shared utils.js
 - [ ] Luxury and Friendly themes are bare bones — need polish
 
 ### Features
 - [ ] Per-client config.js generation (automate Worker URL injection)
 - [ ] Favicon + meta tags missing from HTML files
 - [ ] No image cropping/resizing on upload
+- [ ] Automate the platform → client export pipeline
+- [ ] Test full end-to-end deployment on a real client's Cloudflare account
 
 ---
 

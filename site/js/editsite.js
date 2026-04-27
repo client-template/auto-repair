@@ -20,9 +20,9 @@ let SAVE_STATE = "idle";
 
 // ─── Auth ────────────────────────────────────────────────────────────
 
-function getToken() { return AUTH_TOKEN || localStorage.getItem("site_token"); }
-function setToken(t) { AUTH_TOKEN = t; localStorage.setItem("site_token", t); }
-function clearToken() { AUTH_TOKEN = null; localStorage.removeItem("site_token"); }
+function getToken() { return AUTH_TOKEN || sessionStorage.getItem("site_token"); }
+function setToken(t) { AUTH_TOKEN = t; sessionStorage.setItem("site_token", t); }
+function clearToken() { AUTH_TOKEN = null; sessionStorage.removeItem("site_token"); }
 
 async function checkAuth() {
   const token = getToken();
@@ -318,9 +318,12 @@ function getNestedValue(obj, path) {
 }
 
 function setNestedValue(obj, path, value) {
+  const BLOCKED = new Set(["__proto__", "constructor", "prototype"]);
   const keys = path.split(".");
   const last = keys.pop();
+  if (BLOCKED.has(last)) return;
   const target = keys.reduce((o, k) => {
+    if (BLOCKED.has(k)) return o;
     if (!o[k]) o[k] = {};
     return o[k];
   }, obj);

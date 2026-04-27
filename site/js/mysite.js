@@ -10,8 +10,8 @@ let AUTH_TOKEN = null;
 let BUSINESS = null;
 let CURRENT_TAB = "identity";
 
-function getToken() { return AUTH_TOKEN || localStorage.getItem("site_token"); }
-function setToken(t) { AUTH_TOKEN = t; localStorage.setItem("site_token", t); }
+function getToken() { return AUTH_TOKEN || sessionStorage.getItem("site_token"); }
+function setToken(t) { AUTH_TOKEN = t; sessionStorage.setItem("site_token", t); }
 
 const TABS = [
   { id: "identity", label: "Identity" },
@@ -548,16 +548,18 @@ async function saveChanges() {
 }
 window.saveChanges = saveChanges;
 
-function logout() { localStorage.removeItem("site_token"); window.location.href = "/mysite/login.html"; }
+function logout() { sessionStorage.removeItem("site_token"); window.location.href = "/mysite/login.html"; }
 window.logout = logout;
 
 // ─── Helpers ─────────────────────────────────────────────────────────
 
 function getNestedValue(obj, path) { return path.split(".").reduce((o, k) => o?.[k], obj); }
 function setNestedValue(obj, path, value) {
+  const BLOCKED = new Set(["__proto__", "constructor", "prototype"]);
   const keys = path.split(".");
   const last = keys.pop();
-  const target = keys.reduce((o, k) => { if (!o[k]) o[k] = {}; return o[k]; }, obj);
+  if (BLOCKED.has(last)) return;
+  const target = keys.reduce((o, k) => { if (BLOCKED.has(k)) return o; if (!o[k]) o[k] = {}; return o[k]; }, obj);
   target[last] = value;
 }
 function esc(s) { return s == null ? "" : String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;"); }

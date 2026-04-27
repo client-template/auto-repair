@@ -12,10 +12,15 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Login failed");
-    localStorage.setItem("site_token", data.token);
+    sessionStorage.setItem("site_token", data.token);
     window.location.href = "/mysite/edit.html";
   } catch (err) {
-    errorEl.textContent = err.message;
+    // Show rate-limit messages as-is; generic message for everything else
+    if (err.message && err.message.includes("Too many login attempts")) {
+      errorEl.textContent = err.message;
+    } else {
+      errorEl.textContent = "Invalid password. Please try again.";
+    }
     errorEl.style.display = "block";
   }
 });

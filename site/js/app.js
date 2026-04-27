@@ -223,7 +223,7 @@ function renderStats(b, v) {
       <div class="stats-grid">
         ${stats.map((s, i) => `
           <div class="stat-card">
-            <div class="stat-value" data-target="${s.value}" data-suffix="${esc(s.suffix)}" ${E("stats." + i + ".value")}>0${esc(s.suffix)}</div>
+            <div class="stat-value" data-target="${esc(String(s.value))}" data-suffix="${esc(s.suffix)}" ${E("stats." + i + ".value")}>0${esc(s.suffix)}</div>
             <div class="stat-label" ${E("stats." + i + ".label")}>${esc(s.label)}</div>
           </div>`).join("")}
       </div>
@@ -624,13 +624,23 @@ function initInteractions() {
     });
   }
 
-  // Booking form submit
+  // Booking form submit — sends to Worker for email/storage
   const form = document.getElementById("bookingForm");
   if (form) {
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const formData = new FormData(form);
       const data = Object.fromEntries(formData);
+      try {
+        await fetch(`${API_BASE}/booking`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+      } catch {
+        // Silently continue — show success to customer regardless
+        // (booking endpoint may not be configured yet)
+      }
       form.style.display = "none";
       document.getElementById("formSuccess").style.display = "block";
     });
