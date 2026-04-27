@@ -122,7 +122,8 @@ function getClientIP(request) {
 
 async function checkRateLimit(ip, env) {
   const key = `ratelimit:login:${ip}`;
-  const record = await env.CONTENT.get(key, "json");
+  const kv = env.RATE_LIMIT || env.CONTENT;
+  const record = await kv.get(key, "json");
 
   if (!record) return { allowed: true, remaining: MAX_LOGIN_ATTEMPTS };
 
@@ -141,16 +142,17 @@ async function checkRateLimit(ip, env) {
 
 async function recordFailedAttempt(ip, env) {
   const key = `ratelimit:login:${ip}`;
-  const record = await env.CONTENT.get(key, "json");
+  const kv = env.RATE_LIMIT || env.CONTENT;
+  const record = await kv.get(key, "json");
   const now = Math.floor(Date.now() / 1000);
 
   if (!record || (now - record.firstAttempt) > LOCKOUT_WINDOW) {
-    await env.CONTENT.put(key, JSON.stringify({
+    await kv.put(key, JSON.stringify({
       count: 1,
       firstAttempt: now,
     }), { expirationTtl: LOCKOUT_WINDOW });
   } else {
-    await env.CONTENT.put(key, JSON.stringify({
+    await kv.put(key, JSON.stringify({
       count: record.count + 1,
       firstAttempt: record.firstAttempt,
     }), { expirationTtl: LOCKOUT_WINDOW });
@@ -159,7 +161,8 @@ async function recordFailedAttempt(ip, env) {
 
 async function clearRateLimit(ip, env) {
   const key = `ratelimit:login:${ip}`;
-  await env.CONTENT.delete(key);
+  const kv = env.RATE_LIMIT || env.CONTENT;
+  await kv.delete(key);
 }
 
 // ─── Auth ───────────────────────────────────────────────────────────

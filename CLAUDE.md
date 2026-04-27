@@ -162,9 +162,13 @@ See `AUDIT.md` for initial codebase audit and `SECURITY-AUDIT.md` for the full 1
 - [x] Path traversal prevention on image endpoint
 - [x] `data:` removed from CSP `img-src` (Red Team round 2 finding)
 
+### Security — done (Red Team simulation follow-up, 2026-04-27)
+- [x] `data:` removed from CSP `img-src` — changed to `img-src 'self' https:`
+- [x] "Sign Out All Devices" button in form editor admin panel (calls `POST /api/invalidate-sessions`)
+- [x] Separate `RATE_LIMIT` KV namespace for rate-limit records (with fallback to `CONTENT` for backwards compat)
+
 ### Security — known limitations (accepted risks)
 - **Last-write-wins race condition:** Two admins editing simultaneously can overwrite each other's changes. Accepted: single-admin tool, no concurrent editing expected. If needed later, add ETag/If-Match optimistic locking.
-- **KV write quota exhaustion:** Distributed login spam (below per-IP threshold) could exhaust KV write quota via rate-limit records. Mitigation: enable Cloudflare Edge Rate Limiting on `/api/login` route in production, or use a separate KV namespace for rate-limit records so quota exhaustion doesn't affect content storage.
 - **sessionStorage token (not HttpOnly cookie):** Token accessible to JS. Acceptable for single-admin tool; XSS is mitigated by strict CSP. Full HttpOnly cookie auth would require significant Worker refactor.
 
 ### Code quality

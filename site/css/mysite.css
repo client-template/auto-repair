@@ -47,6 +47,14 @@
   background: var(--accent-soft);
   border-color: var(--accent);
 }
+.admin-btn-warning {
+  color: #d97706;
+  border-color: #d97706;
+}
+.admin-btn-warning:hover {
+  background: #d97706;
+  color: white;
+}
 .admin-btn-danger {
   color: #dc2626;
   border-color: #dc2626;

@@ -65,6 +65,7 @@ function renderAdmin() {
           <div class="admin-header-actions">
             <a href="/mysite/edit.html" class="admin-btn">Inline Editor</a>
             <a href="/" class="admin-btn" target="_blank">View Site</a>
+            <button class="admin-btn admin-btn-warning" onclick="invalidateAllSessions()">Sign Out All Devices</button>
             <button class="admin-btn admin-btn-danger" onclick="logout()">Sign Out</button>
           </div>
         </div>
@@ -552,6 +553,22 @@ window.saveChanges = saveChanges;
 
 function logout() { sessionStorage.removeItem("site_token"); window.location.href = "/mysite/login.html"; }
 window.logout = logout;
+
+async function invalidateAllSessions() {
+  if (!confirm("This will sign out all devices. You will need to log in again. Continue?")) return;
+  try {
+    const res = await fetch(`${API_BASE}/invalidate-sessions`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${getToken()}` },
+    });
+    if (!res.ok) throw new Error("Failed to invalidate sessions");
+    sessionStorage.removeItem("site_token");
+    window.location.href = "/mysite/login.html";
+  } catch (err) {
+    alert("Failed to invalidate sessions: " + err.message);
+  }
+}
+window.invalidateAllSessions = invalidateAllSessions;
 
 // ─── Helpers ─────────────────────────────────────────────────────────
 

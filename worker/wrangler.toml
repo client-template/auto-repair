@@ -5,8 +5,14 @@ compatibility_date = "2024-12-01"
 # KV namespace for content storage
 [[kv_namespaces]]
 binding = "CONTENT"
-# Per-client: run `wrangler kv:namespace create CONTENT` and replace this ID
-id = "" # Per-client: run `wrangler kv:namespace create CONTENT` and paste your ID here
+# Per-client: run `wrangler kv:namespace create CONTENT` and paste your ID here
+id = ""
+
+# KV namespace for rate limiting (separate from content to prevent DoS on CMS)
+[[kv_namespaces]]
+binding = "RATE_LIMIT"
+# Per-client: run `wrangler kv:namespace create RATE_LIMIT` and paste your ID here
+id = ""
 
 # R2 bucket for image uploads
 [[r2_buckets]]
