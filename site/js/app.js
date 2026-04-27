@@ -545,15 +545,15 @@ function renderContact(b, v) {
     contactInfoHtml = `
       <div class="contact-info-box" data-visibility="showContactInfo">
         <div class="contact-info-item">
-          <span class="contact-info-label">Phone</span>
+          <span class="contact-info-label">Phone:</span>
           <a href="tel:${esc(info.phone || "")}" class="contact-info-value" ${E("businessInfo.phone")}>${esc(info.phone || "")}</a>
         </div>
         <div class="contact-info-item">
-          <span class="contact-info-label">Email</span>
+          <span class="contact-info-label">Email:</span>
           <a href="mailto:${esc(email)}" class="contact-info-value" ${E("businessInfo.email")}>${esc(email)}</a>
         </div>
         ${info.address ? `<div class="contact-info-item">
-          <span class="contact-info-label">Address</span>
+          <span class="contact-info-label">Address:</span>
           <span class="contact-info-value" ${E("businessInfo.address")}>${esc(info.address)}</span>
         </div>` : ""}
       </div>`;
