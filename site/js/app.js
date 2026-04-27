@@ -523,9 +523,13 @@ function renderContact(b, v) {
       <div class="contact-inner">
         <h2 class="section-title" ${E("contact.heading")}>${esc(c.heading || "Contact Us")}</h2>
         <p class="contact-desc" style="color:var(--text-secondary);margin-top:0.5rem" ${E("contact.description")}>${esc(c.description || "Get in touch — we'd love to hear from you.")}</p>
-        ${mapHtml}
-        ${contactInfoHtml}
-        ${hoursHtml}
+        <div class="contact-grid">
+          <div class="contact-grid-map">${mapHtml}</div>
+          <div class="contact-grid-details">
+            ${contactInfoHtml}
+            ${hoursHtml}
+          </div>
+        </div>
       </div>
     </section>`;
 }
