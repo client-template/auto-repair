@@ -5,4 +5,4 @@
  * set API_BASE = "/api". When they're on separate subdomains
  * (e.g. testing), use the full Worker URL.
  */
-const API_BASE = "https://site-api.getyoursitelive.workers.dev/api";
+const API_BASE = "https://auto-repair-api.getyoursitelive.workers.dev/api";

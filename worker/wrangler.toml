@@ -1,4 +1,4 @@
-name = "site-api"
+name = "auto-repair-api"
 main = "src/index.js"
 compatibility_date = "2024-12-01"
 
