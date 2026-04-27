@@ -1,5 +1,5 @@
 {
-  "slug": "seed-reply",
+  "slug": "seed-reply-auto",
   "category": "Car repair and maintenance service",
   "theme": "modern",
   "businessInfo": {
@@ -7,12 +7,44 @@
     "tagline": "Honest repairs. Real technicians. No surprises.",
     "founded": 2015,
     "phone": "(555) 123-4567",
-    "email": "info@seedreply.com",
+    "email": "",
     "address": "123 Main Street, Clifton, NJ 07011",
     "hours": "Mon-Fri: 8am-6pm, Sat: 8am-2pm",
     "emergencyPhone": "(555) 123-4567",
     "logoUrl": "",
-    "social": { "facebook": "", "instagram": "", "linkedin": "", "youtube": "" }
+    "social": {
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "youtube": ""
+    }
+  },
+  "hoursSchedule": {
+    "mon": {
+      "open": "08:00",
+      "close": "18:00"
+    },
+    "tue": {
+      "open": "08:00",
+      "close": "18:00"
+    },
+    "wed": {
+      "open": "08:00",
+      "close": "18:00"
+    },
+    "thu": {
+      "open": "08:00",
+      "close": "18:00"
+    },
+    "fri": {
+      "open": "08:00",
+      "close": "18:00"
+    },
+    "sat": {
+      "open": "08:00",
+      "close": "14:00"
+    },
+    "sun": null
   },
   "hero": {
     "eyebrowPrefix": "Family-owned since 2015",
@@ -21,13 +53,13 @@
     "primaryCta": "See Our Services",
     "secondaryCta": "Request an Estimate",
     "whyTitle": "Why customers keep coming back",
+    "heroImage": "https://images.pexels.com/photos/3807277/pexels-photo-3807277.jpeg?auto=compress&cs=tinysrgb&w=1400",
     "whyBullets": [
       "Photo-backed diagnostics — we show you what's wrong.",
       "Same-day turnaround on most repairs.",
       "24-month / 24,000-mile warranty on parts and labor.",
       "Friendly, plain-language explanations."
-    ],
-    "heroImage": "https://images.pexels.com/photos/3807277/pexels-photo-3807277.jpeg?auto=compress&cs=tinysrgb&w=1400"
+    ]
   },
   "about": {
     "heading": "Where Expertise Meets Honesty",
@@ -40,17 +72,45 @@
     "primaryImage": "https://images.pexels.com/photos/4489713/pexels-photo-4489713.jpeg?auto=compress&cs=tinysrgb&w=1400",
     "secondaryImage": "https://images.pexels.com/photos/2244746/pexels-photo-2244746.jpeg?auto=compress&cs=tinysrgb&w=1400",
     "whyUsCards": [
-      { "title": "Honest Diagnostics", "description": "We show photos of every issue before recommending repairs." },
-      { "title": "Same-Day Service", "description": "Most repairs completed within 24 hours." },
-      { "title": "Real-Time Updates", "description": "Text and email updates from check-in to pickup." },
-      { "title": "2-Year Warranty", "description": "24,000-mile parts and labor protection on every job." }
+      {
+        "title": "Honest Diagnostics",
+        "description": "We show photos of every issue before recommending repairs."
+      },
+      {
+        "title": "Same-Day Service",
+        "description": "Most repairs completed within 24 hours."
+      },
+      {
+        "title": "Real-Time Updates",
+        "description": "Text and email updates from check-in to pickup."
+      },
+      {
+        "title": "2-Year Warranty",
+        "description": "24,000-mile parts and labor protection on every job."
+      }
     ]
   },
   "stats": [
-    { "label": "Years in Business", "value": 11, "suffix": "+" },
-    { "label": "Satisfied Customers", "value": 1200, "suffix": "+" },
-    { "label": "Repairs Completed", "value": 6000, "suffix": "+" },
-    { "label": "Certified Technicians", "value": 4, "suffix": "" }
+    {
+      "label": "Years in Business",
+      "value": 11,
+      "suffix": "+"
+    },
+    {
+      "label": "Satisfied Customers",
+      "value": 1200,
+      "suffix": "+"
+    },
+    {
+      "label": "Repairs Completed",
+      "value": 6000,
+      "suffix": "+"
+    },
+    {
+      "label": "Certified Technicians",
+      "value": 4,
+      "suffix": ""
+    }
   ],
   "services": [
     {
@@ -59,7 +119,12 @@
       "priceRange": "$79–$129",
       "duration": "30–60 min",
       "description": "Full-system diagnostic scan to identify warning lights and performance issues.",
-      "features": ["OBD-II scan", "Check engine code reading", "Written diagnostic report", "Repair recommendations"]
+      "features": [
+        "OBD-II scan",
+        "Check engine code reading",
+        "Written diagnostic report",
+        "Repair recommendations"
+      ]
     },
     {
       "id": "brakes",
@@ -67,7 +132,12 @@
       "priceRange": "$129–$349",
       "duration": "1–2 hours",
       "description": "Complete brake service — pads, rotors, calipers, fluid. Safe stopping power restored.",
-      "features": ["Pad and rotor replacement", "Caliper inspection", "Brake fluid flush", "Post-service test drive"]
+      "features": [
+        "Pad and rotor replacement",
+        "Caliper inspection",
+        "Brake fluid flush",
+        "Post-service test drive"
+      ]
     },
     {
       "id": "oil",
@@ -75,7 +145,12 @@
       "priceRange": "$39–$79",
       "duration": "20–30 min",
       "description": "Keep your engine running clean with quality oil and a new filter.",
-      "features": ["Conventional or synthetic oil", "OEM-quality filter", "Fluid top-off", "Multi-point inspection"]
+      "features": [
+        "Conventional or synthetic oil",
+        "OEM-quality filter",
+        "Fluid top-off",
+        "Multi-point inspection"
+      ]
     },
     {
       "id": "tires",
@@ -83,7 +158,12 @@
       "priceRange": "$69–$229",
       "duration": "45–90 min",
       "description": "Tire mounting, balancing, rotation, and alignment.",
-      "features": ["Tire rotation and balance", "4-wheel alignment", "Tread depth check", "Pressure adjustment"]
+      "features": [
+        "Tire rotation and balance",
+        "4-wheel alignment",
+        "Tread depth check",
+        "Pressure adjustment"
+      ]
     },
     {
       "id": "inspection",
@@ -91,75 +171,125 @@
       "priceRange": "Included with service",
       "duration": "30 min",
       "description": "State safety and emissions inspection. Fast turnaround.",
-      "features": ["Full safety inspection", "Emissions test", "Courtesy pre-check", "Same-day results"]
+      "features": [
+        "Full safety inspection",
+        "Emissions test",
+        "Courtesy pre-check",
+        "Same-day results"
+      ]
     }
   ],
   "deals": [
     {
       "id": "d1",
       "title": "Oil Change Special",
-      "description": "Full synthetic oil change with filter. Up to 5 quarts.",
-      "price": "$49",
+      "badge": "Limited Time",
       "originalPrice": "$79",
-      "badge": "Limited Time"
+      "price": "$49",
+      "description": "Full synthetic oil change with filter. Up to 5 quarts."
     },
     {
       "id": "d2",
       "title": "Brake Inspection",
-      "description": "No-charge brake inspection with any service visit.",
-      "price": "Free",
+      "badge": "Free",
       "originalPrice": "",
-      "badge": "Free"
+      "price": "Free",
+      "description": "No-charge brake inspection with any service visit."
     }
   ],
   "pricing": [
-    { "id": "oil-change", "name": "Oil Change", "price": "$49", "note": "Synthetic blend + multi-point inspection", "popular": false },
-    { "id": "brake-service", "name": "Brake Service", "price": "$189", "note": "Pads, rotor inspection, safety check", "popular": true },
-    { "id": "diagnostic", "name": "Full Diagnostic", "price": "$89", "note": "Digital scan + road test report", "popular": false }
-  ],
-  "team": [
     {
-      "name": "Mike",
-      "role": "Owner & Lead Mechanic",
-      "experience": "15+ years",
-      "specialty": "Domestic and import repair",
-      "image": "https://images.pexels.com/photos/4489743/pexels-photo-4489743.jpeg?auto=compress&cs=tinysrgb&w=800"
+      "id": "oil-change",
+      "name": "Oil Change",
+      "price": "$49",
+      "note": "Synthetic blend + multi-point inspection",
+      "popular": false
     },
     {
-      "name": "Sarah",
-      "role": "Senior Technician",
-      "experience": "10+ years",
-      "specialty": "Diagnostics and brake systems",
-      "image": "https://images.pexels.com/photos/4489730/pexels-photo-4489730.jpeg?auto=compress&cs=tinysrgb&w=800"
+      "id": "brake-service",
+      "name": "Brake Service",
+      "price": "$189",
+      "note": "Pads, rotor inspection, safety check",
+      "popular": true
+    },
+    {
+      "id": "diagnostic",
+      "name": "Full Diagnostic",
+      "price": "$89",
+      "note": "Digital scan + road test report",
+      "popular": false
     }
   ],
   "testimonials": [
-    { "name": "John D.", "context": "2020 Toyota Camry", "quote": "Best mechanic shop in the area. Upfront about the cost and finished faster than expected. Will definitely be back." },
-    { "name": "Maria L.", "context": "2018 Honda CR-V", "quote": "Took my car in for a brake job. They showed me photos of the worn pads and explained everything. Fair price, great work." },
-    { "name": "Carlos R.", "context": "2017 Ford F-150", "quote": "Finally a mechanic I can trust. They didn't try to upsell me on anything I didn't need. Highly recommend." }
+    {
+      "name": "John D.",
+      "context": "2020 Toyota Camry",
+      "quote": "Best mechanic shop in the area. Upfront about the cost and finished faster than expected. Will definitely be back."
+    },
+    {
+      "name": "Maria L.",
+      "context": "2018 Honda CR-V",
+      "quote": "Took my car in for a brake job. They showed me photos of the worn pads and explained everything. Fair price, great work."
+    },
+    {
+      "name": "Carlos R.",
+      "context": "2017 Ford F-150",
+      "quote": "Finally a mechanic I can trust. They didn't try to upsell me on anything I didn't need. Highly recommend."
+    }
   ],
   "photos": [
-    { "id": "p1", "url": "https://images.pexels.com/photos/3807517/pexels-photo-3807517.jpeg?auto=compress&cs=tinysrgb&w=800", "caption": "Engine diagnostics" },
-    { "id": "p2", "url": "https://images.pexels.com/photos/3642618/pexels-photo-3642618.jpeg?auto=compress&cs=tinysrgb&w=800", "caption": "Brake inspection" },
-    { "id": "p3", "url": "https://images.pexels.com/photos/4489702/pexels-photo-4489702.jpeg?auto=compress&cs=tinysrgb&w=800", "caption": "Under the hood" },
-    { "id": "p4", "url": "https://images.pexels.com/photos/4489767/pexels-photo-4489767.jpeg?auto=compress&cs=tinysrgb&w=800", "caption": "Professional service" },
-    { "id": "p5", "url": "https://images.pexels.com/photos/3807277/pexels-photo-3807277.jpeg?auto=compress&cs=tinysrgb&w=800", "caption": "Our shop" },
-    { "id": "p6", "url": "https://images.pexels.com/photos/3807386/pexels-photo-3807386.jpeg?auto=compress&cs=tinysrgb&w=800", "caption": "Quality parts" }
+    {
+      "id": "p1",
+      "url": "https://images.pexels.com/photos/3807517/pexels-photo-3807517.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "caption": "Engine diagnostics"
+    },
+    {
+      "id": "p2",
+      "url": "https://images.pexels.com/photos/3642618/pexels-photo-3642618.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "caption": "Brake inspection"
+    },
+    {
+      "id": "p3",
+      "url": "https://images.pexels.com/photos/4489702/pexels-photo-4489702.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "caption": "Under the hood"
+    },
+    {
+      "id": "p4",
+      "url": "https://images.pexels.com/photos/4489767/pexels-photo-4489767.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "caption": "Professional service"
+    },
+    {
+      "id": "p5",
+      "url": "https://images.pexels.com/photos/3807277/pexels-photo-3807277.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "caption": "Our shop"
+    },
+    {
+      "id": "p6",
+      "url": "https://images.pexels.com/photos/3807386/pexels-photo-3807386.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "caption": "Quality parts"
+    }
   ],
-  "hoursSchedule": {
-    "mon": { "open": "08:00", "close": "18:00" },
-    "tue": { "open": "08:00", "close": "18:00" },
-    "wed": { "open": "08:00", "close": "18:00" },
-    "thu": { "open": "08:00", "close": "18:00" },
-    "fri": { "open": "08:00", "close": "18:00" },
-    "sat": { "open": "08:00", "close": "14:00" },
-    "sun": null
-  },
   "faqs": [
-    { "id": "f1", "question": "How long does an oil change take?", "answer": "Most oil changes are done in 30–45 minutes. We'll text you when your car is ready." },
-    { "id": "f2", "question": "Do I need an appointment?", "answer": "Walk-ins are welcome, but scheduling online ensures minimal wait time." },
-    { "id": "f3", "question": "What warranty do you offer?", "answer": "All repairs come with a 24-month / 24,000-mile parts and labor warranty." },
-    { "id": "f4", "question": "Do you offer loaner cars?", "answer": "Yes — call ahead and we'll arrange a loaner for longer repairs." }
+    {
+      "id": "f1",
+      "question": "How long does an oil change take?",
+      "answer": "Most oil changes are done in 30–45 minutes. We'll text you when your car is ready."
+    },
+    {
+      "id": "f2",
+      "question": "Do I need an appointment?",
+      "answer": "Walk-ins are welcome, but scheduling online ensures minimal wait time."
+    },
+    {
+      "id": "f3",
+      "question": "What warranty do you offer?",
+      "answer": "All repairs come with a 24-month / 24,000-mile parts and labor warranty."
+    },
+    {
+      "id": "f4",
+      "question": "Do you offer loaner cars?",
+      "answer": "Yes — call ahead and we'll arrange a loaner for longer repairs."
+    }
   ],
   "emergency": {
     "heading": "Car Won't Start? We're Here for You.",
@@ -175,13 +305,6 @@
     "phoneLabel": "Phone",
     "copyrightSuffix": "All rights reserved."
   },
-  "navLabels": {
-    "home": "Home",
-    "about": "About",
-    "services": "Services",
-    "technicians": "Technicians",
-    "contact": "Contact"
-  },
   "sectionTitles": {
     "services": "Our Services",
     "dealsEyebrow": "Current Specials",
@@ -196,13 +319,20 @@
     "pricingPopular": "Most Popular",
     "pricingRegular": "No surprises"
   },
+  "navLabels": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "technicians": "Technicians",
+    "contact": "Contact"
+  },
   "visibility": {
     "showHeroEyebrow": true,
+    "showHeroCtas": true,
     "showHeroHeadline": true,
     "showHeroLead": true,
-    "showHeroCtas": true,
-    "showHeroCard": true,
     "showHeroImage": true,
+    "showHeroCard": true,
     "showAbout": true,
     "showAboutWhyUs": true,
     "showStats": true,
@@ -216,7 +346,23 @@
     "showEmergencyBanner": false,
     "showBooking": true,
     "showContactInfo": true,
-    "showHours": true,
-    "showMap": true
-  }
+    "showMap": true,
+    "showHours": true
+  },
+  "team": [
+    {
+      "name": "Mike",
+      "role": "Owner & Lead Mechanic",
+      "experience": "15+ years",
+      "specialty": "Domestic and import repair",
+      "image": "https://images.pexels.com/photos/4489743/pexels-photo-4489743.jpeg?auto=compress&cs=tinysrgb&w=800"
+    },
+    {
+      "name": "Sarah",
+      "role": "Senior Technician",
+      "experience": "10+ years",
+      "specialty": "Diagnostics and brake systems",
+      "image": "https://images.pexels.com/photos/4489730/pexels-photo-4489730.jpeg?auto=compress&cs=tinysrgb&w=800"
+    }
+  ]
 }
