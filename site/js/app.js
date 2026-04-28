@@ -593,7 +593,7 @@ function renderFooter(b) {
       <div class="footer-inner">
         <div><span class="footer-brand" ${E("businessInfo.name")}>${esc(info.name)}</span> — <span ${E("businessInfo.tagline")} style="color:var(--text-secondary)">${esc(info.tagline || "")}</span></div>
         <div class="footer-details">
-          <strong ${E("footer.locationLabel")}>${esc(f.locationLabel || "Location")}</strong>: <span ${E("businessInfo.address")}>${esc(info.address)}</span>
+          Serving ${esc(extractCity(info.address))} and surrounding areas
           · <strong ${E("footer.phoneLabel")}>${esc(f.phoneLabel || "Phone")}</strong>: <a href="tel:${esc(info.phone)}"><span ${E("businessInfo.phone")}>${esc(info.phone)}</span></a>
         </div>
       </div>
@@ -787,6 +787,22 @@ function initInteractions() {
 function esc(str) {
   if (!str) return "";
   return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
+/** Extract "City, ST" from an address like "123 Main St, Clifton, NJ 07011" */
+function extractCity(address) {
+  if (!address) return "";
+  // Split by comma, expect: street, city, state zip
+  const parts = address.split(",").map(p => p.trim());
+  if (parts.length >= 3) {
+    const city = parts[1];
+    const stateZip = parts[2].trim().split(/\s+/);
+    return stateZip.length >= 1 ? `${city}, ${stateZip[0]}` : city;
+  }
+  if (parts.length === 2) {
+    return parts[1];
+  }
+  return address;
 }
 
 // ─── Boot ────────────────────────────────────────────────────────────
