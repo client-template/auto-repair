@@ -62,8 +62,8 @@ function renderSite() {
   html += renderAbout(b, v);
   html += renderStats(b, v);
   html += renderServices(b, v);
-  html += renderDeals(b, v);
   html += renderPricing(b, v);
+  html += renderDeals(b, v);
   html += renderTeam(b, v);
   html += renderTestimonials(b, v);
   html += renderPhotos(b, v);
