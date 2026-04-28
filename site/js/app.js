@@ -29,7 +29,8 @@ const ICONS = {
 // ─── Load Content ────────────────────────────────────────────────────
 async function loadContent() {
   try {
-    const res = await fetch(`${API_BASE}/content`);
+    const contentUrl = typeof SITE_KEY !== "undefined" ? `${API_BASE}/content?site=${SITE_KEY}` : `${API_BASE}/content`;
+    const res = await fetch(contentUrl);
     if (!res.ok) throw new Error("Failed to load content");
     BUSINESS = await res.json();
     THEME = BUSINESS.theme || "modern";

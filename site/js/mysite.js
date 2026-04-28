@@ -33,16 +33,16 @@ const TABS = [
 
 async function initAdmin() {
   const token = getToken();
-  if (!token) { window.location.href = "/mysite/login.html"; return; }
+  if (!token) { window.location.href = "login.html"; return; }
 
   try {
     const check = await fetch(`${API_BASE}/auth/check`, { headers: { Authorization: `Bearer ${token}` } });
     const d = await check.json();
-    if (!d.authenticated) { window.location.href = "/mysite/login.html"; return; }
-  } catch { window.location.href = "/mysite/login.html"; return; }
+    if (!d.authenticated) { window.location.href = "login.html"; return; }
+  } catch { window.location.href = "login.html"; return; }
 
   try {
-    const res = await fetch(`${API_BASE}/content`, {
+    const res = await fetch(`${API_BASE}/content${typeof SITE_KEY !== "undefined" ? "?site=" + SITE_KEY : ""}`, {
       headers: { Authorization: `Bearer ${getToken()}` }
     });
     BUSINESS = await res.json();
@@ -64,7 +64,7 @@ function renderAdmin() {
         <div class="admin-header-inner">
           <span class="admin-brand">${esc(BUSINESS.businessInfo?.name || "Site Admin")}</span>
           <div class="admin-header-actions">
-            <a href="/mysite/edit.html" class="admin-btn">Inline Editor</a>
+            <a href="edit.html" class="admin-btn">Inline Editor</a>
             <a href="/" class="admin-btn" target="_blank">View Site</a>
             <button class="admin-btn admin-btn-warning" onclick="invalidateAllSessions()">Sign Out All Devices</button>
             <button class="admin-btn admin-btn-danger" onclick="logout()">Sign Out</button>
@@ -619,7 +619,7 @@ async function saveChanges() {
   status.textContent = "Saving...";
 
   try {
-    const res = await fetch(`${API_BASE}/content`, {
+    const res = await fetch(`${API_BASE}/content${typeof SITE_KEY !== "undefined" ? "?site=" + SITE_KEY : ""}`, {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${getToken()}` },
       body: JSON.stringify(BUSINESS),
@@ -636,7 +636,7 @@ async function saveChanges() {
 }
 window.saveChanges = saveChanges;
 
-function logout() { sessionStorage.removeItem("site_token"); window.location.href = "/mysite/login.html"; }
+function logout() { sessionStorage.removeItem("site_token"); window.location.href = "login.html"; }
 window.logout = logout;
 
 async function invalidateAllSessions() {
@@ -648,7 +648,7 @@ async function invalidateAllSessions() {
     });
     if (!res.ok) throw new Error("Failed to invalidate sessions");
     sessionStorage.removeItem("site_token");
-    window.location.href = "/mysite/login.html";
+    window.location.href = "login.html";
   } catch (err) {
     alert("Failed to invalidate sessions: " + err.message);
   }

@@ -13,7 +13,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Login failed");
     sessionStorage.setItem("site_token", data.token);
-    window.location.href = "/mysite/edit.html";
+    window.location.href = "edit.html";
   } catch (err) {
     // Show rate-limit messages as-is; generic message for everything else
     if (err.message && err.message.includes("Too many login attempts")) {

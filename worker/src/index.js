@@ -21,6 +21,7 @@
  */
 
 const CONTENT_KEY = "business";
+const ALLOWED_SITES = new Set(["business", "barber"]);
 const TOKEN_GENERATION_KEY = "token_generation";
 const TOKEN_TTL = 7 * 24 * 60 * 60 * 1000; // 7 days
 
@@ -253,7 +254,9 @@ export default {
 
     // ─── GET /api/content ──────────────────────────────────────
     if (path === "/api/content" && request.method === "GET") {
-      const data = await env.CONTENT.get(CONTENT_KEY, "json");
+      const siteParam = url.searchParams.get("site");
+      const siteKey = siteParam && ALLOWED_SITES.has(siteParam) ? siteParam : CONTENT_KEY;
+      const data = await env.CONTENT.get(siteKey, "json");
       if (!data) return errorResponse("No content found", 404, request, env);
 
       // Strip internal fields for unauthenticated requests
@@ -308,7 +311,9 @@ export default {
         return errorResponse(`Unknown fields: ${unknownKeys.join(", ")}`, 400, request, env);
       }
 
-      await env.CONTENT.put(CONTENT_KEY, JSON.stringify(body));
+      const saveSiteParam = url.searchParams.get("site");
+      const saveSiteKey = saveSiteParam && ALLOWED_SITES.has(saveSiteParam) ? saveSiteParam : CONTENT_KEY;
+      await env.CONTENT.put(saveSiteKey, JSON.stringify(body));
       return json({ ok: true }, 200, request, env);
     }
 

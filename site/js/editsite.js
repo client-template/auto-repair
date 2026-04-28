@@ -44,7 +44,7 @@ function scheduleSave() {
 
 async function doSave() {
   try {
-    const res = await fetch(`${API_BASE}/content`, {
+    const res = await fetch(`${API_BASE}/content${typeof SITE_KEY !== "undefined" ? "?site=" + SITE_KEY : ""}`, {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${getToken()}` },
       body: JSON.stringify(BUSINESS),
@@ -114,7 +114,7 @@ function enterEditMode() {
     toolbar.innerHTML = `
       <span class="edit-toolbar-title">Editing Mode</span>
       <div style="display:flex;gap:0.5rem">
-        <a href="/mysite/" class="edit-toolbar-btn">Form Editor</a>
+        <a href="./" class="edit-toolbar-btn">Form Editor</a>
         <button class="edit-toolbar-btn exit" onclick="exitEditMode()">Exit</button>
       </div>`;
     app.insertBefore(toolbar, app.firstChild);
@@ -338,10 +338,10 @@ function setNestedValue(obj, path, value) {
 
 async function initEditor() {
   const authenticated = await checkAuth();
-  if (!authenticated) { window.location.href = "/mysite/login.html"; return; }
+  if (!authenticated) { window.location.href = "login.html"; return; }
 
   try {
-    const res = await fetch(`${API_BASE}/content`, {
+    const res = await fetch(`${API_BASE}/content${typeof SITE_KEY !== "undefined" ? "?site=" + SITE_KEY : ""}`, {
       headers: { Authorization: `Bearer ${getToken()}` }
     });
     if (!res.ok) throw new Error("Failed to load");
