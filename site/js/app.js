@@ -563,7 +563,6 @@ function renderContact(b, v) {
         ${info.address ? `<div class="contact-info-item">
           <span class="contact-info-label">Address:</span>
           <span class="contact-info-value" ${E("businessInfo.address")}>${esc(info.address)}</span>
-          <a href="https://maps.google.com/?q=${encodeURIComponent(info.address)}" target="_blank" rel="noopener" class="contact-maps-link">Open in Maps</a>
         </div>` : ""}
       </div>`;
   }
